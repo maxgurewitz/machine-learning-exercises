@@ -141,7 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-    \title{sutton-barto-reinforcement-ch-2}
+    \title{sutton-barto-reinforcement-exercises-ch-2}
     
     
     
@@ -280,11 +280,71 @@
     
 
     
+    2.1:
+
+When using an \(\epsilon\)-greedy action selection criterion, in the
+case of two actions and \$\epsilon = 0.5 \$, actions would be selected
+at random half of the time. Of the times when actions are selected at
+random, the greedy action will be select half of the time. Meaning the
+greedy action will be selected a total of 75\% of the time.
+
+2.2:
+
+Given that all of the reward estimates are initialized to 0, the first
+action will be selected arbitrarily, possible at random.
+
+The following actions must have been selected at random as a result of
+the \(\epsilon\) case: \(A_2\), \(A_5\).
+
+This can be demonstrated by observing that \(Q_1(1) = 1 > Q_1(2) = 0\)
+and \(Q_4(2) = \frac{R_2 + R_3 + R_4}{3} = \frac{5}{3} > Q_4(3) = 0\).
+
+Regarding the question of when random \(\epsilon\) selection could have
+occured, it could have occured at any time step after the first.
+
+2.3:
+
+In the long run \(\epsilon=0.01\) will achieve the highest cumulative
+reward and probability of selecting the correct answer. The disadvantage
+of \(\epsilon=0.01\) relative to \(\epsilon=0.1\) is that it will cause
+our agent to take longer to find the optimal action, but it will select
+that action more consistently once it has been found.
+
+The optimal action has a reward of \(1.55\). The expected reward per
+action once the agent has found the best possible action is equal to the
+sum of the greedy case and the \(\epsilon\) random case:
+\(1.55 (1 - \epsilon) + \epsilon \sum^{10}_{i=1}\frac{q_*(i)}{10}\).
+
+So the difference between the expected long term reward per action in
+the \(\epsilon = .01\) and \(\epsilon = .1\) cases is
+\(1.55(.1 - .01) = 0.1395\).
+
+2.4:
+
+If \(\alpha\) is not constant, but instead varies with with each update
+step \(n\), then our incremental update rule utilizing \(\alpha_n\) can
+be expressed as follows:
+
+\begin{align} 
+Q_{n+1} & = Q_n + \alpha_n [R_n - Q_n] \\
+& = \alpha_n R_n + (1 - \alpha_n) Q_n \\
+& = \alpha_n R_n + (1 - \alpha_n) (\alpha_{n-1}R_{n-1} + (1 - \alpha_{n-1})Q_{n-1})  \\
+& = \alpha_n R_n + (1 - \alpha_n)\alpha_{n-1} R_{n-1} + (1 - \alpha_{n-1})(1 - \alpha_n)(Q_{n-2} + \alpha_{n-2}[R_{n-2} - Q_{n-2}]) \\
+& = \alpha_n R_n + (1 - \alpha_n)\alpha_{n-1} R_{n-1} + (1 - \alpha_{n-1})(1 - \alpha_n)((1 - \alpha_{n-2})Q_{n-2} + \alpha_{n-2}R_{n-2})) \\
+& = \alpha_n R_n + (1 - \alpha_n)\alpha_{n-1} R_{n-1} + (1 - \alpha_{n-1})(1 - \alpha_n)\alpha_{n-2}R_{n-2} +  \\ 
+& ...  +  Q_1 \prod_{i=1}^n(1 - \alpha_i) + \alpha_{1} R_1 \prod_{j = 1}^{n - 1} (1 - \alpha_{n - j + 1}) \\
+& = Q_1 \prod_{i=1}^n(1 - \alpha_i) + \alpha_n R_n + \sum^{n - 1}_{i = 1}\alpha_{i} R_i \prod_{j = 1}^{n - i} (1 - \alpha_{n - j + 1})
+\end{align}
+
+2.5:
+
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}146}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
           \PY{k+kn}{import} \PY{n+nn}{random}
           \PY{k+kn}{import} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{random}
           \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+          
+          \PY{c+c1}{\PYZsh{} EXERCISE 2.5}
           
           \PY{n}{steps} \PY{o}{=} \PY{l+m+mi}{10000}
           \PY{n}{runs} \PY{o}{=} \PY{l+m+mi}{2000}
@@ -396,7 +456,7 @@
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -406,10 +466,28 @@
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
+    2.6:
+
+The optimistic greedy agent's initial spike in rewards can be explained
+as follows.
+
+\(q_{*}(a)\) is normally distributed with a mean of \(0\) and a variance
+of \(1\). This means \(Q_1 > max\{q_{*}(a)\}\) in the vast majority of
+cases.
+
+For the reward distributions where the above is true, agents with the
+optimistic greedy action-value method will attempt every action at least
+once at the onset.
+
+The spike we observe is a product of agents selecting the optimal action
+once during this preliminary period.
+
+2.7
+
 
     % Add a bibliography block to the postdoc
     
